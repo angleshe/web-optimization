@@ -183,13 +183,16 @@ export default (): Configuration => {
           }
         }),
       ],
+      // 代码分割
       splitChunks: {
         // 最小分割大小
         minSize: 0,
         cacheGroups: {
           default: {
+            // 文件名
             name: 'common',
             chunks: 'initial',
+            // 引用次数
             minChunks: 2
           }
         }
