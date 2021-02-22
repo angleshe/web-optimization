@@ -1,0 +1,42 @@
+// 引入SpritesmithPlugin生成的scss
+@import './mixins/sprite.scss';
+
+* {
+  /* 这是css注释 */
+  padding: 0;
+  margin: 0;
+}
+.test-img {
+  width: 300px;
+}
+.test-css-icon {
+  width: 32px;
+  height: 32px;
+  /* ～表示webpack路径alias*/
+  background: url(~images/bold.png) no-repeat center center;
+}
+.sprite-container {
+  display: flex;
+}
+.sprite1{
+  height: 32px;
+  width: 32px;
+  // 调用生成的sprite函数
+  // 入参为$图片名
+  @include sprite($link_sprite);
+}
+.sprite2{
+  height: 32px;
+  width: 32px;
+  @include sprite($redo_sprite);
+}
+.sprite3{
+  height: 32px;
+  width: 32px;
+  @include sprite($revoke_sprite);
+}
+.sprite3{
+  height: 32px;
+  width: 32px;
+  @include sprite($table_sprite);
+}
