@@ -1,5 +1,5 @@
 import { common } from '@/script/test';
-import '@/style/index.scss'
+import '@/style/index.scss';
 import tagIcon from 'images/tag.png';
 
 // js引入图片
@@ -7,7 +7,6 @@ const imageDom = document.createElement<'img'>('img');
 imageDom.src = tagIcon;
 imageDom.style.display = 'block';
 document.body.append(imageDom);
-
 
 // 添加列表
 const addListItemBtn = document.getElementById('add-list-item-event');
@@ -32,24 +31,26 @@ addListItemBtn?.addEventListener('click', () => {
   listContainerDom?.append(fragment);
 });
 
-
 const transformBtn = document.getElementById('transform-event');
 
 const liWidth: number = addListItemBtn?.offsetWidth ?? 100;
 
 transformBtn?.addEventListener('click', () => {
   if (listContainerDom && listContainerDom.childElementCount) {
+    // 为什么要display先none后再block ？？？
+    // display可以关闭该节点内的回流
     listContainerDom.style.display = 'none';
     for (let i: number = 0; i < listContainerDom.childElementCount; i++) {
       if (listContainerDom.children[i] instanceof HTMLLIElement) {
+        // 每次使用addListItemBtn?.offsetWidth会产生回流
+        // 所以这里不直接使用listContainerDom.style.width = `${addListItemBtn?.offsetWidth}px`
+        // 用变量先把addListItemBtn?.offsetWidth存起来以后使用变量就不会产生回流了
         listContainerDom.style.width = `${liWidth}px`;
         listContainerDom.style.backgroundColor = 'red';
       }
-
     }
     listContainerDom.style.display = 'block';
   }
-
 });
 
 // 这是js注释
