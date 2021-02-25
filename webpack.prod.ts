@@ -17,23 +17,26 @@ const prodConfig: Configuration = merge<Configuration>(webpackCommonConfig, {
         plugins: [
           ['gifsicle', { interlaced: true }],
 
-          ['jpegtran', { 
-            quality: 0,
-            progressive: true
-          }],
+          [
+            'jpegtran',
+            {
+              quality: 0,
+              progressive: true
+            }
+          ],
           ['optipng', { optimizationLevel: 5 }],
           [
             'svgo',
             {
               plugins: [
                 {
-                  removeViewBox: false,
-                },
-              ],
-            },
-          ],
-        ],
-      },
+                  removeViewBox: false
+                }
+              ]
+            }
+          ]
+        ]
+      }
     }),
     // 打包gzip
     new CompressionPlugin({
@@ -43,53 +46,58 @@ const prodConfig: Configuration = merge<Configuration>(webpackCommonConfig, {
       threshold: 10240,
       // 压缩文件类型
       test: /\.(js|css|jpg)$/
-    }),
+    })
   ],
   devtool: false,
-    optimization: {
-      // 是否启动js代码压缩
-      // 默认 当mode为development 关闭压缩；当mode为production 则开启压缩
-      minimize: true,
-      minimizer: [
-        // 压缩js插件 webpack5+ 自带
-        new TerserPlugin({
-          // 删除注释
-          terserOptions: {
-            format: {
-              comments: false
+  optimization: {
+    // 是否启动js代码压缩
+    // 默认 当mode为development 关闭压缩；当mode为production 则开启压缩
+    minimize: true,
+    minimizer: [
+      // 压缩js插件 webpack5+ 自带
+      new TerserPlugin({
+        // 删除注释
+        terserOptions: {
+          format: {
+            comments: false
+          }
+        },
+        extractComments: false
+      }),
+      // 压缩css插件
+      new CssMinimizerPlugin({
+        minimizerOptions: {
+          preset: [
+            'default',
+            // 删除所有注释
+            {
+              discardComments: { removeAll: true }
             }
-          },
-          extractComments: false
-        }),
-        // 压缩css插件
-        new CssMinimizerPlugin({
-          minimizerOptions: {
-            preset: [
-              'default',
-              // 删除所有注释
-              {
-                discardComments: { removeAll: true }
-              }
-            ]
-          }
-        }),
-      ],
-      // 代码分割
-      splitChunks: {
-        // 最小分割大小
-        // 注：这里为了效果设置成0，项目中根据实际情况设置
-        minSize: 0,
-        cacheGroups: {
-          default: {
-            // 文件名
-            name: 'common',
-            chunks: 'initial',
-            // 引用次数
-            minChunks: 2
-          }
+          ]
+        }
+      })
+    ],
+    // 代码分割
+    splitChunks: {
+      // 最小分割大小
+      // 注：这里为了效果设置成0，项目中根据实际情况设置
+      minSize: 0,
+      cacheGroups: {
+        default: {
+          // 文件名
+          name: 'common',
+          chunks: 'initial',
+          // 引用次数
+          minChunks: 2
         }
       }
     }
-})
+  },
+  // 剥离本地第三方代码包
+  externals: {
+    react: 'React',
+    'react-dom': 'ReactDOM'
+  }
+});
 
 export default prodConfig;

@@ -1,6 +1,8 @@
 import { common } from '@/script/test';
 import '@/style/index.scss';
 import tagIcon from 'images/tag.png';
+import React from 'react';
+import ReactDom from 'react-dom';
 
 // js引入图片
 const imageDom = document.createElement<'img'>('img');
@@ -55,3 +57,11 @@ transformBtn?.addEventListener('click', () => {
 
 // 这是js注释
 console.log('这是第一个页面', common);
+
+// test React
+
+const reactRootDom = document.getElementById('react-root');
+
+if (reactRootDom) {
+  ReactDom.render(React.createElement('span', null, 'hello react!'), reactRootDom);
+}
